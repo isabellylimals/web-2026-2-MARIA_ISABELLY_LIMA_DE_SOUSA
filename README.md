@@ -1,106 +1,106 @@
-# Plataforma de Portfólio Profissional
+# Plataforma de Conexão entre Fotógrafos e Clientes
 
-Plataforma web para criação e gerenciamento de portfólios profissionais de forma dinâmica, permitindo que freelancers e profissionais criativos apresentem seus trabalhos, personalizem sua página e recebam contatos de potenciais clientes.
+Plataforma web para conectar fotógrafos de eventos a clientes que buscam serviços fotográficos. O sistema permite que fotógrafos divulguem seus serviços, portfólios e disponibilidade, enquanto clientes podem pesquisar, comparar e solicitar orçamentos diretamente pela plataforma.
 
-> Projeto desenvolvido para a disciplina de Desenvolvimento Web — UFERSA.
+> Projeto desenvolvido para a disciplina de **Desenvolvimento Web** — UFERSA.
 
 ---
 
-## Sobre o Projeto
+##  Sobre o Projeto
 
-Profissionais como designers, fotógrafos, desenvolvedores, escritores e freelancers frequentemente utilizam redes sociais ou páginas estáticas para divulgar seus trabalhos.
+Encontrar um fotógrafo adequado para um evento pode ser uma tarefa difícil, principalmente quando o cliente precisa comparar diferentes profissionais, tipos de serviço e faixas de preço. Atualmente, essa busca ocorre frequentemente por meio de redes sociais, indicações pessoais ou aplicativos de mensagens, dificultando a organização das informações.
 
-Embora essas alternativas sejam acessíveis, elas podem apresentar limitações de personalização, organização das informações e gerenciamento do conteúdo.
-
-A proposta deste projeto é desenvolver uma plataforma que permita ao profissional criar e gerenciar seu próprio portfólio sem depender diretamente de conhecimentos técnicos para realizar atualizações.
-
-A plataforma terá suporte a templates personalizáveis, gerenciamento de projetos, depoimentos, métricas de acesso e um canal de contato para potenciais clientes.
+**A solução proposta** é uma plataforma web que centraliza informações sobre fotógrafos, seus serviços, preços, disponibilidade e trabalhos já realizados, facilitando a conexão entre profissionais e clientes.
 
 ---
 
 ## Objetivos
 
-* Facilitar a criação e manutenção de portfólios profissionais;
-* Permitir personalização da apresentação do portfólio;
-* Centralizar projetos e informações profissionais;
-* Disponibilizar métricas de visualização e interação;
-* Facilitar o contato entre profissionais e potenciais clientes;
-* Explorar uma arquitetura Serverless utilizando serviços da AWS;
-* Aplicar conceitos de automação, organização de processos e escalabilidade.
+- Facilitar a busca e comparação de fotógrafos por clientes;
+- Permitir que fotógrafos divulguem seus serviços e portfólio;
+- Centralizar informações de serviços, preços e disponibilidade;
+- Permitir envio e acompanhamento de solicitações de orçamento;
+- Explorar uma arquitetura Serverless utilizando serviços da AWS;
+- Aplicar conceitos de escalabilidade, baixo custo e automação.
 
 ---
 
-## Perfis de Usuário
+##  Perfis de Usuário
 
-### Administrador
+###  Administrador
 
-Responsável pelo gerenciamento geral da plataforma.
+Responsável pela administração geral da plataforma.
 
-* Gerenciar usuários;
-* Gerenciar templates;
-* Visualizar métricas gerais;
-* Gerenciar configurações da plataforma;
-* Prestar suporte aos usuários.
+- Gerenciar usuários;
+- Aprovar ou remover cadastros de fotógrafos;
+- Gerenciar categorias de eventos;
+- Moderar fotografias e informações publicadas;
+- Visualizar métricas gerais da plataforma;
+- Gerenciar configurações do sistema.
 
-### Profissional
+###  Fotógrafo
 
-Usuário responsável pela criação e gerenciamento do portfólio.
+Profissional que utiliza a plataforma para divulgar seus serviços.
 
-* Gerenciar informações profissionais;
-* Criar e gerenciar projetos;
-* Gerenciar depoimentos;
-* Personalizar o portfólio;
-* Visualizar métricas;
-* Receber mensagens e propostas.
+- Criar e editar seu cadastro profissional;
+- Cadastrar os tipos de eventos que atende;
+- Cadastrar serviços oferecidos;
+- Informar preços ou faixas de preço;
+- Informar disponibilidade;
+- Adicionar e remover fotografias de eventos realizados;
+- Visualizar solicitações de orçamento;
+- Responder às solicitações recebidas.
 
-### Visitante
+### Cliente
 
-Usuário que acessa um portfólio publicado.
+Usuário que busca um fotógrafo para contratar.
 
-* Visualizar portfólios;
-* Navegar pelos projetos;
-* Acessar links externos;
-* Enviar mensagens ou propostas de contato.
+- Pesquisar fotógrafos;
+- Filtrar fotógrafos por tipo de evento;
+- Visualizar informações dos profissionais;
+- Visualizar fotografias de trabalhos realizados;
+- Consultar serviços e preços;
+- Consultar disponibilidade;
+- Enviar solicitações de orçamento;
+- Acompanhar suas solicitações.
 
 ---
 
-## Principais Funcionalidades
+##  Principais Funcionalidades
 
-### Autenticação
+### Autenticação e Controle de Acesso
 
-* Cadastro de usuários;
-* Login;
-* Controle de acesso;
-* Diferenciação de permissões por perfil.
+- Cadastro e login de usuários;
+- Controle de acesso baseado em perfis (Administrador, Fotógrafo, Cliente);
+- Gerenciamento de identidade via Amazon Cognito.
 
-### Gerenciamento de Portfólio
+### Gerenciamento de Fotógrafos e Serviços
 
-* Criação e edição do perfil profissional;
-* Upload de imagem de perfil;
-* Gerenciamento de links;
-* Seleção de templates;
-* Personalização do portfólio.
+- Cadastro profissional (nome, descrição, cidade, contato);
+- Cadastro de tipos de eventos atendidos;
+- Cadastro de serviços com descrição, preço e duração;
+- Gerenciamento de disponibilidade.
 
-### Gerenciamento de Projetos
+### Portfólio de Trabalhos
 
-* Cadastro de projetos;
-* Edição e exclusão;
-* Categorias e tags;
-* Imagens e vídeos;
-* Links para projetos externos.
+- Upload de fotografias de eventos realizados;
+- Título, descrição, tipo de evento e data;
+- Armazenamento seguro no Amazon S3.
 
-### Contato
+### Solicitações de Orçamento
 
-* Formulário de contato;
-* Recebimento de mensagens;
-* Envio de propostas de contratação.
+- Clientes enviam solicitações para fotógrafos;
+- Informações: nome, e-mail, tipo de evento, data, local, mensagem;
+- Status da solicitação (enviada, visualizada, respondida);
+- Fotógrafos visualizam e respondem solicitações.
 
-### Métricas
+### Métricas e Analytics
 
-* Visualizações do portfólio;
-* Visualizações de projetos;
-* Cliques em links;
-* Quantidade de contatos recebidos.
+- Visualizações do perfil do fotógrafo;
+- Visualizações das fotografias;
+- Cliques em contato;
+- Quantidade de solicitações de orçamento;
+- Taxa de resposta dos fotógrafos.
 
 ---
 
@@ -203,7 +203,7 @@ A infraestrutura foi planejada utilizando serviços Serverless da AWS.
 A estimativa de custos foi realizada utilizando a **AWS Pricing Calculator**, considerando um cenário inicial de baixo volume de usuários, requisições e armazenamento.
 
 **Estimativa:**
-https://calculator.aws/#/estimate?id=40e6682c69e0dcf2c9fbfc9d8b0a05286ad634b0
+https://calculator.aws/#/estimate?id=70148b4d82c2824283c859f84a416fbab71fd3f5
 
 O custo real poderá variar de acordo com o crescimento da aplicação e o volume de utilização dos serviços.
 

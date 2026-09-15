@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-main: #0F0A1F;
+  --color-bg-secondary: #18102D;
+  --color-purple-primary: #7C3AED;
+  --color-purple-accent: #A855F7;
+  --color-lavender-soft: #C084FC;
+  --color-text-main: #FFFFFF;
+  --color-text-secondary: #C4B5FD;
+  --color-border-custom: #3B2A5A;
+}
+
+body {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+  min-height: 100vh;
+}

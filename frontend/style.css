@@ -1,0 +1,566 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+
+/* ================================
+   CONFIGURAÇÕES GERAIS
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "DM Sans", sans-serif;
+    background-color: #f6f3ef;
+    color: #1e1b1a;
+    line-height: 1.6;
+}
+
+
+/* ================================
+   CABEÇALHO
+================================ */
+
+header {
+    width: 100%;
+    padding: 25px 8%;
+    background-color: #f6f3ef;
+    border-bottom: 1px solid #e5dfd8;
+}
+
+.navbar {
+    max-width: 1200px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-family: "Playfair Display", serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.logo span {
+    color: #8b3d52;
+}
+
+.menu {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #3f3a37;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    color: #8b3d52;
+}
+
+
+/* ================================
+   HERO
+================================ */
+
+.hero {
+    min-height: 85vh;
+    max-width: 1200px;
+    margin: auto;
+    padding: 90px 30px;
+
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: center;
+    gap: 80px;
+}
+
+.tag {
+    color: #8b3d52;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    color: #8b3d52;
+}
+
+.hero-descricao {
+    max-width: 620px;
+    font-size: 1.05rem;
+    color: #5d5652;
+    margin-bottom: 35px;
+}
+
+.botao {
+    display: inline-block;
+    padding: 15px 28px;
+
+    background-color: #1e1b1a;
+    color: #ffffff;
+
+    text-decoration: none;
+    border-radius: 2px;
+
+    transition: 0.3s;
+}
+
+.botao:hover {
+    background-color: #8b3d52;
+    transform: translateY(-2px);
+}
+
+
+/* ================================
+   HERO CARD
+================================ */
+
+.hero-card {
+    display: flex;
+    justify-content: center;
+}
+
+.card-destaque {
+    width: 100%;
+    max-width: 400px;
+    min-height: 470px;
+
+    padding: 55px 45px;
+
+    background: linear-gradient(
+        135deg,
+        #2a2321,
+        #56313c
+    );
+
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    box-shadow: 20px 20px 0 #d8cbc2;
+}
+
+.card-label {
+    color: #d6b5a7;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+}
+
+.card-destaque h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 2.6rem;
+    line-height: 1.15;
+}
+
+.linha {
+    width: 70px;
+    height: 2px;
+    background-color: #d6b5a7;
+    margin: 30px 0;
+}
+
+.card-destaque p:last-child {
+    color: #e0d6d2;
+}
+
+
+/* ================================
+   SEÇÕES
+================================ */
+
+.secao {
+    max-width: 1200px;
+    margin: auto;
+    padding: 110px 30px;
+}
+
+.titulo-secao {
+    max-width: 750px;
+    margin-bottom: 55px;
+}
+
+.titulo-secao > p {
+    color: #8b3d52;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.titulo-secao h2 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    line-height: 1.15;
+}
+
+
+/* ================================
+   SOBRE
+================================ */
+
+.sobre-conteudo {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 80px;
+}
+
+.sobre-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    font-size: 1.05rem;
+    color: #5d5652;
+}
+
+.sobre-destaque {
+    padding: 40px;
+    background-color: #e9e0d9;
+}
+
+.sobre-destaque span {
+    font-family: "Playfair Display", serif;
+    font-size: 3rem;
+    color: #8b3d52;
+}
+
+.sobre-destaque h3 {
+    font-size: 1.5rem;
+    margin: 10px 0 15px;
+}
+
+
+/* ================================
+   PERFIS
+================================ */
+
+.perfis {
+    background-color: #ece6e0;
+    max-width: none;
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+.perfis .titulo-secao,
+.cards-perfis {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cards-perfis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.perfil-card {
+    background-color: #f6f3ef;
+    padding: 40px;
+    border: 1px solid #ded5ce;
+    transition: 0.3s;
+}
+
+.perfil-card:hover {
+    transform: translateY(-8px);
+}
+
+.perfil-card span {
+    color: #8b3d52;
+    font-weight: 700;
+}
+
+.perfil-card h3 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.7rem;
+    margin: 20px 0 15px;
+}
+
+.perfil-card p {
+    color: #5d5652;
+}
+
+.perfil-card.destaque {
+    background-color: #2a2321;
+    color: white;
+}
+
+.perfil-card.destaque p {
+    color: #ded4cf;
+}
+
+
+/* ================================
+   FUNCIONALIDADES
+================================ */
+
+.grid-funcionalidades {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+
+    background-color: #ded5ce;
+}
+
+.grid-funcionalidades article {
+    background-color: #f6f3ef;
+    padding: 38px;
+    min-height: 220px;
+}
+
+.grid-funcionalidades h3 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+}
+
+.grid-funcionalidades p {
+    color: #5d5652;
+}
+
+
+/* ================================
+   ARQUITETURA
+================================ */
+
+.arquitetura {
+    background-color: #2a2321;
+    max-width: none;
+    padding-left: 8%;
+    padding-right: 8%;
+    color: white;
+}
+
+.arquitetura .titulo-secao,
+.arquitetura-conteudo {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.arquitetura .titulo-secao h2 {
+    color: white;
+}
+
+.arquitetura-conteudo > p {
+    max-width: 700px;
+    color: #d8d0cb;
+    margin-bottom: 50px;
+    font-size: 1.05rem;
+}
+
+.aws-servicos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.aws-servicos div {
+    border: 1px solid #5a4b48;
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.aws-servicos strong {
+    color: #d6b5a7;
+    font-size: 1.2rem;
+}
+
+.aws-servicos span {
+    color: #d8d0cb;
+    font-size: 0.9rem;
+}
+
+
+/* ================================
+   TECNOLOGIAS
+================================ */
+
+.tecnologias-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.tecnologias-lista span {
+    padding: 14px 22px;
+
+    background-color: #e9e0d9;
+
+    border: 1px solid #ded5ce;
+
+    transition: 0.3s;
+}
+
+.tecnologias-lista span:hover {
+    background-color: #8b3d52;
+    color: white;
+}
+
+
+/* ================================
+   OBJETIVO
+================================ */
+
+.objetivo {
+    padding: 140px 30px;
+    text-align: center;
+
+    background-color: #8b3d52;
+    color: white;
+}
+
+.objetivo p {
+    max-width: 600px;
+    margin: auto auto 25px;
+    color: #f0dede;
+}
+
+.objetivo h2 {
+    max-width: 900px;
+    margin: auto;
+
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.15;
+}
+
+
+/* ================================
+   RODAPÉ
+================================ */
+
+footer {
+    padding: 60px 8%;
+
+    background-color: #1b1716;
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+footer h3 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.7rem;
+    margin-bottom: 10px;
+}
+
+footer > div > p,
+.footer-info p {
+    color: #b9afaa;
+}
+
+.footer-info {
+    text-align: right;
+}
+
+
+/* ================================
+   RESPONSIVIDADE
+================================ */
+
+@media (max-width: 900px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+
+    .hero-card {
+        justify-content: flex-start;
+    }
+
+    .sobre-conteudo {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .cards-perfis {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-funcionalidades {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .aws-servicos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    header {
+        padding: 20px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .menu {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero {
+        padding: 70px 25px;
+    }
+
+    .secao {
+        padding: 80px 25px;
+    }
+
+    .grid-funcionalidades {
+        grid-template-columns: 1fr;
+    }
+
+    .aws-servicos {
+        grid-template-columns: 1fr;
+    }
+
+    footer {
+        flex-direction: column;
+        padding: 50px 25px;
+    }
+
+    .footer-info {
+        text-align: left;
+    }
+
+}

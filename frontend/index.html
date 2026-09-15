@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+    <meta charset="UTF-8">
+
+    <!-- Configuração para dispositivos móveis -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título exibido no Google -->
+    <title>FocoConecta | Plataforma para Encontrar Fotógrafos</title>
+
+    <!-- Descrição exibida nos mecanismos de busca -->
+    <meta
+        name="description"
+        content="FocoConecta é uma plataforma web que conecta clientes a fotógrafos profissionais, facilitando a busca, comparação de serviços, visualização de portfólios e solicitação de orçamentos."
+    >
+
+    <!-- Informações do projeto -->
+    <meta
+        name="keywords"
+        content="fotógrafos, fotografia, eventos, serviços fotográficos, portfólio, orçamento, fotógrafos profissionais, plataforma de fotografia"
+    >
+
+    <meta name="author" content="Maria Isabelly Lima de Sousa">
+
+    <!-- Permite indexação pelos mecanismos de busca -->
+    <meta name="robots" content="index, follow">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O que é a FocoConecta?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A FocoConecta é uma plataforma web criada para conectar fotógrafos de eventos a clientes que buscam serviços fotográficos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como os clientes encontram fotógrafos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Os clientes podem pesquisar profissionais, comparar serviços, consultar informações, visualizar portfólios e verificar a disponibilidade dos fotógrafos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quais funcionalidades a plataforma oferece?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A plataforma oferece cadastro e autenticação de usuários, busca de fotógrafos, visualização de portfólios, consulta de serviços e preços, disponibilidade e solicitações de orçamento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quais tecnologias serão utilizadas no projeto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O projeto utiliza tecnologias como React, Python e serviços da AWS, incluindo Amazon S3, AWS Lambda, API Gateway, DynamoDB, Amazon Cognito e CloudFront."
+      }
+    }
+  ]
+}
+</script>
+
+    <!-- Informações para compartilhamento em redes sociais -->
+    <meta property="og:type" content="website">
+
+    <meta
+        property="og:title"
+        content="FocoConecta | Plataforma para Encontrar Fotógrafos"
+    >
+
+    <meta
+        property="og:description"
+        content="Encontre fotógrafos, explore portfólios, compare serviços e solicite orçamentos para seu evento."
+    >
+
+    <meta property="og:locale" content="pt_BR">
+
+    <!-- Arquivo de estilo -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+    <!-- HERO -->
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-conteudo">
+
+                <p class="tag">
+                    Plataforma para fotógrafos e clientes
+                </p>
+
+                <h1>
+                    Encontre o fotógrafo ideal
+                    <span>para cada momento.</span>
+                </h1>
+
+                <p class="hero-descricao">
+                    Uma plataforma criada para conectar clientes a fotógrafos
+                    profissionais, facilitando a busca, comparação de serviços,
+                    visualização de portfólios e solicitação de orçamentos.
+                </p>
+
+                <a href="#funcionalidades" class="botao">
+                    Conhecer a plataforma
+                </a>
+
+            </div>
+
+
+            <div class="hero-card">
+
+                <div class="card-destaque">
+                    <p class="card-label">
+                        Fotografia que conecta
+                    </p>
+
+                    <h2>
+                        Profissionais.
+                        <br>
+                        Eventos.
+                        <br>
+                        Momentos.
+                    </h2>
+
+                    <div class="linha"></div>
+
+                    <p>
+                        Encontre profissionais, compare serviços
+                        e transforme momentos importantes em
+                        memórias registradas.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SOBRE -->
+        <section id="sobre" class="secao">
+
+            <div class="titulo-secao">
+
+                <p>Sobre o projeto</p>
+
+                <h2>
+                    Uma nova forma de conectar
+                    clientes e fotógrafos.
+                </h2>
+
+            </div>
+
+
+            <div class="sobre-conteudo">
+
+                <div class="sobre-texto">
+
+                    <p>
+                        Encontrar um fotógrafo adequado para um evento pode ser
+                        uma tarefa difícil. Muitas vezes, clientes precisam procurar
+                        profissionais em diferentes redes sociais, comparar informações
+                        manualmente e entrar em contato individualmente com cada fotógrafo.
+                    </p>
+
+                    <p>
+                        A FocoConecta propõe centralizar esse processo em uma única
+                        plataforma, reunindo informações sobre profissionais, serviços,
+                        preços, disponibilidade e trabalhos realizados.
+                    </p>
+
+                </div>
+
+
+                <div class="sobre-destaque">
+
+                    <span>01</span>
+
+                    <h3>
+                        Tudo em um único lugar.
+                    </h3>
+
+                    <p>
+                        Pesquise fotógrafos, explore portfólios, compare serviços
+                        e envie solicitações de orçamento de forma simples.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PERFIS -->
+        <section class="secao perfis">
+
+            <div class="titulo-secao">
+
+                <p>Perfis de usuários</p>
+
+                <h2>
+                    Uma plataforma pensada
+                    para diferentes necessidades.
+                </h2>
+
+            </div>
+
+
+            <div class="cards-perfis">
+
+                <article class="perfil-card">
+
+                    <span>01</span>
+
+                    <h3>Administrador</h3>
+
+                    <p>
+                        Responsável pela administração da plataforma,
+                        gerenciamento de usuários, moderação de conteúdos
+                        e acompanhamento das métricas.
+                    </p>
+
+                </article>
+
+
+                <article class="perfil-card destaque">
+
+                    <span>02</span>
+
+                    <h3>Fotógrafo</h3>
+
+                    <p>
+                        Pode divulgar seus serviços, cadastrar preços,
+                        disponibilidade, tipos de eventos e publicar
+                        trabalhos em seu portfólio.
+                    </p>
+
+                </article>
+
+
+                <article class="perfil-card">
+
+                    <span>03</span>
+
+                    <h3>Cliente</h3>
+
+                    <p>
+                        Pode pesquisar fotógrafos, comparar serviços,
+                        consultar disponibilidade e solicitar orçamentos.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- FUNCIONALIDADES -->
+        <section id="funcionalidades" class="secao funcionalidades">
+
+            <div class="titulo-secao">
+
+                <p>Principais funcionalidades</p>
+
+                <h2>
+                    Recursos para tornar a busca
+                    mais simples e organizada.
+                </h2>
+
+            </div>
+
+
+            <div class="grid-funcionalidades">
+
+                <article>
+                    <h3>Autenticação</h3>
+
+                    <p>
+                        Cadastro e login de usuários com controle
+                        de acesso baseado nos diferentes perfis.
+                    </p>
+                </article>
+
+
+                <article>
+                    <h3>Busca de fotógrafos</h3>
+
+                    <p>
+                        Pesquisa e comparação de profissionais
+                        de acordo com diferentes critérios.
+                    </p>
+                </article>
+
+
+                <article>
+                    <h3>Portfólios</h3>
+
+                    <p>
+                        Visualização de trabalhos realizados
+                        e fotografias de eventos anteriores.
+                    </p>
+                </article>
+
+
+                <article>
+                    <h3>Serviços e preços</h3>
+
+                    <p>
+                        Informações detalhadas sobre serviços,
+                        duração e faixas de preço.
+                    </p>
+                </article>
+
+
+                <article>
+                    <h3>Disponibilidade</h3>
+
+                    <p>
+                        Consulta de datas disponíveis
+                        para diferentes tipos de eventos.
+                    </p>
+                </article>
+
+
+                <article>
+                    <h3>Orçamentos</h3>
+
+                    <p>
+                        Envio e acompanhamento de solicitações
+                        diretamente pela plataforma.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ARQUITETURA -->
+        <section id="arquitetura" class="secao arquitetura">
+
+            <div class="titulo-secao">
+
+                <p>Infraestrutura</p>
+
+                <h2>
+                    Arquitetura Serverless
+                    preparada para crescer.
+                </h2>
+
+            </div>
+
+
+            <div class="arquitetura-conteudo">
+
+                <p>
+                    A aplicação foi planejada utilizando serviços Serverless
+                    da AWS, permitindo escalabilidade, automação e redução
+                    dos custos com infraestrutura.
+                </p>
+
+
+                <div class="aws-servicos">
+
+                    <div>
+                        <strong>S3</strong>
+                        <span>Frontend e mídias</span>
+                    </div>
+
+                    <div>
+                        <strong>CloudFront</strong>
+                        <span>Distribuição</span>
+                    </div>
+
+                    <div>
+                        <strong>API Gateway</strong>
+                        <span>APIs</span>
+                    </div>
+
+                    <div>
+                        <strong>Lambda</strong>
+                        <span>Lógica de negócio</span>
+                    </div>
+
+                    <div>
+                        <strong>DynamoDB</strong>
+                        <span>Dados</span>
+                    </div>
+
+                    <div>
+                        <strong>Cognito</strong>
+                        <span>Autenticação</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TECNOLOGIAS -->
+        <section id="tecnologias" class="secao tecnologias">
+
+            <div class="titulo-secao">
+
+                <p>Tecnologias</p>
+
+                <h2>
+                    Tecnologias utilizadas
+                    no desenvolvimento.
+                </h2>
+
+            </div>
+
+
+            <div class="tecnologias-lista">
+
+                <span>React</span>
+                <span>Python</span>
+                <span>Amazon S3</span>
+                <span>AWS Lambda</span>
+                <span>API Gateway</span>
+                <span>DynamoDB</span>
+                <span>Amazon Cognito</span>
+                <span>CloudFront</span>
+                <span>Git</span>
+                <span>GitHub</span>
+
+            </div>
+
+        </section>
+        <!-- FAQ -->
+<section id="faq" class="secao faq">
+
+    <div class="titulo-secao">
+
+        <p>Perguntas frequentes</p>
+
+        <h2>
+            Conheça melhor
+            a FocoConecta.
+        </h2>
+
+    </div>
+
+
+    <div class="faq-lista">
+
+        <details>
+
+            <summary>
+                O que é a FocoConecta?
+            </summary>
+
+            <p>
+                A FocoConecta é uma plataforma web criada para conectar
+                fotógrafos de eventos a clientes que buscam serviços
+                fotográficos.
+            </p>
+
+        </details>
+
+
+        <details>
+
+            <summary>
+                Como os clientes encontram fotógrafos?
+            </summary>
+
+            <p>
+                Os clientes podem pesquisar profissionais, comparar
+                serviços, consultar informações, visualizar portfólios
+                e verificar a disponibilidade dos fotógrafos.
+            </p>
+
+        </details>
+
+
+        <details>
+
+            <summary>
+                Quais funcionalidades a plataforma oferece?
+            </summary>
+
+            <p>
+                A plataforma oferece cadastro e autenticação de usuários,
+                busca de fotógrafos, visualização de portfólios, consulta
+                de serviços e preços, disponibilidade e solicitações de
+                orçamento.
+            </p>
+
+        </details>
+
+
+        <details>
+
+            <summary>
+                Quais tecnologias serão utilizadas no projeto?
+            </summary>
+
+            <p>
+                O projeto utiliza tecnologias como React, Python e serviços
+                da AWS, incluindo Amazon S3, AWS Lambda, API Gateway,
+                DynamoDB, Amazon Cognito e CloudFront.
+            </p>
+
+        </details>
+
+    </div>
+
+</section>
+        
+
+        <!-- OBJETIVO -->
+        <section class="objetivo">
+
+            <p>
+                Tecnologia para aproximar profissionais,
+                serviços e momentos importantes.
+            </p>
+
+            <h2>
+                Conectar pessoas também é
+                uma forma de criar histórias.
+            </h2>
+
+        </section>
+
+    </main>
+
+
+    <!-- RODAPÉ -->
+    <footer>
+
+        <div>
+
+            <h3>FocoConecta</h3>
+
+            <p>
+                Plataforma de conexão entre fotógrafos e clientes.
+            </p>
+
+        </div>
+
+
+        <div class="footer-info">
+
+            <p>
+                Projeto acadêmico — Desenvolvimento Web
+            </p>
+
+            <p>
+                Universidade Federal Rural do Semi-Árido — UFERSA
+            </p>
+
+            <p>
+                Maria Isabelly Lima de Sousa
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

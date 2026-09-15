@@ -1,0 +1,1 @@
+console.log("FocoConecta carregada com sucesso.");

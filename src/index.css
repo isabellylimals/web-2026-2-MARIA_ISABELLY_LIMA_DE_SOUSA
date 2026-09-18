@@ -1,18 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-bg-main: #0F0A1F;
-  --color-bg-secondary: #18102D;
-  --color-purple-primary: #7C3AED;
-  --color-purple-accent: #A855F7;
-  --color-lavender-soft: #C084FC;
-  --color-text-main: #FFFFFF;
-  --color-text-secondary: #C4B5FD;
-  --color-border-custom: #3B2A5A;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  --color-bg-main: #F6F3EF;
+  --color-bg-secondary: #ECE6E0;
+  --color-text-main: #1E1B1A;
+  --color-text-secondary: #5D5652;
+  --color-text-light: #D8D0CB;
+  --color-wine-primary: #8B3D52;
+  --color-wine-dark: #56313C;
+  --color-brown-dark: #2A2321;
+  --color-beige: #E9E0D9;
+  --color-border-custom: #DED5CE;
+  --color-soft-highlight: #D6B5A7;
+  --color-footer-bg: #1B1716;
 }
 
 body {
   background-color: var(--color-bg-main);
   color: var(--color-text-main);
+  font-family: var(--font-sans);
   min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
 }

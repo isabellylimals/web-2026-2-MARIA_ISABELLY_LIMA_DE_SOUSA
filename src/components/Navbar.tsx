@@ -19,7 +19,7 @@ export default function Navbar() {
           <span className="w-8 h-8 rounded-lg bg-wine-primary flex items-center justify-center font-bold text-bg-main text-sm font-sans">
             L
           </span>
-          LuminaEvents
+          MomentAnia
         </Link>
 
         {/* Menu Desktop */}

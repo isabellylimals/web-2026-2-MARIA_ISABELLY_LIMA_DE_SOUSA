@@ -1,76 +1,161 @@
 import { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuAberto, setMenuAberto] = useState(false);
+  const navigate = useNavigate();
 
-  const navLinkStyle = ({ isActive }: { isActive: boolean }) =>
-    `transition-colors ${
-      isActive
-        ? 'text-wine-primary font-semibold border-b-2 border-wine-primary pb-1'
-        : 'text-text-secondary hover:text-wine-primary'
+  const sessaoStr = localStorage.getItem('usuarioLogado');
+  const usuario = sessaoStr ? JSON.parse(sessaoStr) : null;
+
+  const handleLogout = () => {
+    localStorage.removeItem('usuarioLogado');
+    navigate('/login');
+  };
+
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    `text-sm font-medium transition-colors ${
+      isActive ? 'text-wine-primary' : 'text-text-secondary hover:text-text-main'
     }`;
 
+  const getHomeLink = () => {
+    if (!usuario) return '/';
+    if (usuario.papel === 'fotografo') return '/painel-fotografo';
+    if (usuario.papel === 'admin') return '/funcionalidades';
+    return '/';
+  };
+
   return (
-    <nav className="bg-bg-secondary border-b border-border-custom sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="text-xl font-bold tracking-tight text-text-main font-serif flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-wine-primary flex items-center justify-center font-bold text-bg-main text-sm font-sans">
-            L
-          </span>
-          MomentAnia
+    <header className="border-b border-border-custom bg-bg-main sticky top-0 z-50">
+      <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <Link to={getHomeLink()} className="text-xl font-semibold text-wine-primary tracking-wide">
+          FotoEventos
         </Link>
 
-        {/* Menu Desktop */}
-        <div className="hidden md:flex gap-6 text-sm font-medium items-center">
-          <NavLink to="/" className={navLinkStyle}>
-            Home
-          </NavLink>
-          <NavLink to="/sobre" className={navLinkStyle}>
-            Sobre
-          </NavLink>
-          <NavLink to="/funcionalidades" className={navLinkStyle}>
-            Funcionalidades
-          </NavLink>
-          <NavLink to="/contato" className={navLinkStyle}>
-            Contato
-          </NavLink>
+        <div className="hidden md:flex items-center gap-6">
+          {/* Menu para Visitantes Nao Logados */}
+          {!usuario && (
+            <>
+              <NavLink to="/" className={linkClass}>Início</NavLink>
+              <NavLink to="/sobre" className={linkClass}>Sobre</NavLink>
+              <NavLink to="/contato" className={linkClass}>Contacto</NavLink>
+            </>
+          )}
+
+          {/* Menu para Cliente Logado */}
+          {usuario?.papel === 'cliente' && (
+            <>
+              <NavLink to="/" className={linkClass}>Explorar Fotógrafos</NavLink>
+              <NavLink to="/painel-cliente" className={linkClass}>Meu Perfil</NavLink>
+            </>
+          )}
+
+          {/* Menu para Fotografo */}
+          {usuario?.papel === 'fotografo' && (
+            <>
+              <NavLink to="/painel-fotografo" className={linkClass}>Meu Painel</NavLink>
+              <NavLink to="/" className={linkClass}>Ver Catálogo</NavLink>
+            </>
+          )}
+
+          {/* Menu Limpo para Administrador */}
+          {usuario?.papel === 'admin' && (
+            <>
+              <NavLink to="/funcionalidades" className={linkClass}>Painel Geral</NavLink>
+              <NavLink to="/" className={linkClass}>Ver Catálogo</NavLink>
+            </>
+          )}
+
+          {/* Bloco de Login / Perfil */}
+          {usuario ? (
+            <div className="flex items-center gap-3 border-l border-border-custom pl-4">
+              <div className="text-right">
+                <p className="text-xs font-semibold text-text-main">{usuario.nome}</p>
+                <span className="text-[10px] uppercase tracking-wider text-wine-primary font-medium">
+                  {usuario.papel}
+                </span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="text-xs bg-bg-secondary hover:bg-border-custom text-text-main border border-border-custom px-3 py-1.5 rounded-lg transition-colors"
+              >
+                Sair
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-wine-primary hover:bg-wine-dark text-bg-main text-xs font-medium px-4 py-2 rounded-lg transition-colors"
+            >
+              Entrar
+            </Link>
+          )}
         </div>
 
-        {/* Botão do Menu Mobile */}
         <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-text-main p-2 focus:outline-none"
-          aria-label="Abrir menu"
+          onClick={() => setMenuAberto(!menuAberto)}
+          className="md:hidden text-text-main p-2 focus:outline-none text-xs"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            {isMenuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
+          {menuAberto ? 'Fechar' : 'Menu'}
         </button>
-      </div>
+      </nav>
 
-      {/* Dropdown Menu Mobile */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-bg-secondary border-b border-border-custom px-6 py-4 flex flex-col gap-4 text-sm font-medium">
-          <NavLink to="/" onClick={() => setIsMenuOpen(false)} className={navLinkStyle}>
-            Home
-          </NavLink>
-          <NavLink to="/sobre" onClick={() => setIsMenuOpen(false)} className={navLinkStyle}>
-            Sobre
-          </NavLink>
-          <NavLink to="/funcionalidades" onClick={() => setIsMenuOpen(false)} className={navLinkStyle}>
-            Funcionalidades
-          </NavLink>
-          <NavLink to="/contato" onClick={() => setIsMenuOpen(false)} className={navLinkStyle}>
-            Contato
-          </NavLink>
+      {/* Menu Mobile */}
+      {menuAberto && (
+        <div className="md:hidden border-t border-border-custom bg-bg-secondary px-6 py-4 flex flex-col gap-3">
+          {!usuario && (
+            <>
+              <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Início</NavLink>
+              <NavLink to="/sobre" onClick={() => setMenuAberto(false)} className={linkClass}>Sobre</NavLink>
+              <NavLink to="/contato" onClick={() => setMenuAberto(false)} className={linkClass}>Contacto</NavLink>
+            </>
+          )}
+
+          {usuario?.papel === 'cliente' && (
+            <>
+              <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Explorar Fotógrafos</NavLink>
+              <NavLink to="/painel-cliente" onClick={() => setMenuAberto(false)} className={linkClass}>Meu Perfil</NavLink>
+            </>
+          )}
+
+          {usuario?.papel === 'fotografo' && (
+            <>
+              <NavLink to="/painel-fotografo" onClick={() => setMenuAberto(false)} className={linkClass}>Meu Painel</NavLink>
+              <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Ver Catálogo</NavLink>
+            </>
+          )}
+
+          {usuario?.papel === 'admin' && (
+            <>
+              <NavLink to="/funcionalidades" onClick={() => setMenuAberto(false)} className={linkClass}>Painel Geral</NavLink>
+              <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Ver Catálogo</NavLink>
+            </>
+          )}
+
+          {usuario ? (
+            <div className="pt-2 border-t border-border-custom flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-text-main">{usuario.nome}</p>
+                <p className="text-[10px] text-wine-primary uppercase">{usuario.papel}</p>
+              </div>
+              <button
+                onClick={() => { setMenuAberto(false); handleLogout(); }}
+                className="text-xs bg-bg-main text-wine-primary px-3 py-1 rounded border border-border-custom"
+              >
+                Sair
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setMenuAberto(false)}
+              className="bg-wine-primary text-bg-main text-xs font-medium px-4 py-2 rounded-lg text-center mt-2"
+            >
+              Entrar
+            </Link>
+          )}
         </div>
       )}
-    </nav>
+    </header>
   );
 }

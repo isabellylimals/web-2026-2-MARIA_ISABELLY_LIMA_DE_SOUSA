@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Fotografo {
   id: number;
@@ -87,7 +88,7 @@ export default function Home() {
         Compare portfólios, faixas de preço e disponibilidades para casamentos, aniversários e eventos corporativos na sua região.
       </p>
 
-      {/* Formulário de Pesquisa */}
+      {/* Formulario de Pesquisa */}
       <form onSubmit={handleSearch} className="w-full max-w-xl bg-bg-secondary p-3 rounded-xl border border-border-custom flex gap-3 shadow-sm mb-8">
         <input
           type="text"
@@ -104,7 +105,7 @@ export default function Home() {
         </button>
       </form>
 
-      {/* Filtros Rápidos por Categoria */}
+      {/* Filtros Rapidos por Categoria */}
       <div className="flex flex-wrap gap-2 justify-center mb-12">
         {categorias.map((cat) => (
           <button
@@ -121,7 +122,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Exibição dos Resultados da Busca */}
+      {/* Exibicao dos Resultados */}
       <div className="w-full">
         <h2 className="text-2xl font-normal text-text-main mb-6">
           Fotógrafos Disponíveis ({fotografosFiltrados.length})
@@ -156,9 +157,12 @@ export default function Home() {
                   </div>
                   <div className="flex justify-between items-center border-t border-border-custom pt-3 mt-2">
                     <span className="text-xs font-semibold text-wine-primary">{item.preco}</span>
-                    <button className="text-xs bg-wine-primary hover:bg-wine-dark text-bg-main px-3 py-1.5 rounded transition-colors">
+                    <Link
+                      to={`/portfolio/${item.id}`}
+                      className="text-xs bg-wine-primary hover:bg-wine-dark text-bg-main px-3 py-1.5 rounded transition-colors inline-block"
+                    >
                       Ver Portfólio
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

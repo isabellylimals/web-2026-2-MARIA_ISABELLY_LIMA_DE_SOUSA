@@ -82,41 +82,9 @@ export default function Login() {
       });
 
       if (resultado.isSignedIn) {
-        // Busca os dados do usuário no DynamoDB após autenticar no Cognito.
-        const command = new GetCommand({
-          TableName: 'Usuarios',
-          Key: { email: email.trim().toLowerCase() },
-        });
-
-        const response = await docClient.send(command);
-        const usuario = response.Item;
-
-        if (!usuario) {
-          setErro(
-            'Login realizado, mas o perfil não foi encontrado na tabela Usuarios.'
-          );
-          return;
-        }
-
-        localStorage.setItem(
-          'usuarioLogado',
-          JSON.stringify({
-            email: usuario.email,
-            nome: usuario.nome,
-            papel: usuario.papel,
-          })
-        );
-
-        if (usuario.papel === 'admin') {
-          navigate('/funcionalidades');
-        } else if (usuario.papel === 'fotografo') {
-          navigate('/painel-fotografo');
-        } else {
-          navigate('/');
-        }
-
-        return;
-      }
+  navigate('/chat-ia');
+  return;
+}
 
       if (
         resultado.nextStep.signInStep ===

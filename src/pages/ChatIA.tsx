@@ -1,5 +1,5 @@
-
 import { useEffect, useRef, useState } from 'react';
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 type Mensagem = {
   tipo: 'usuario' | 'assistente';
@@ -16,89 +16,109 @@ export default function ChatIA() {
   const websocketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const websocket = new WebSocket(
-      'wss://dwpt8n9cgd.execute-api.us-east-1.amazonaws.com/dev/'
-    );
+  let websocket: WebSocket | null = null;
+  let cancelado = false;
 
-    websocketRef.current = websocket;
+  const conectar = async () => {
+    try {
+      const sessao = await fetchAuthSession();
+      const token = sessao.tokens?.idToken?.toString();
 
-    websocket.onopen = () => {
-      console.log('Conexão WebSocket estabelecida.');
-      setConectado(true);
-      setErro('');
-    };
-
-  
-websocket.onmessage = (evento) => {
-  console.log('Mensagem recebida:', evento.data);
-
-  try {
-    const resposta = JSON.parse(evento.data);
-
-    // Ignora mensagens de conexão e de controle.
-    if (
-      resposta.type === 'connected' ||
-      resposta.type === 'ping' ||
-      resposta.type === 'pong'
-    ) {
-      return;
-    }
-
-    // Trata mensagens de erro separadamente.
-    if (resposta.type === 'error') {
-      setErro(
-        resposta.message ||
-          'Não foi possível obter uma resposta da IA.'
-      );
-      setCarregando(false);
-      return;
-    }
-
-    // Processa apenas respostas da IA.
-    if (resposta.type === 'response') {
-      const texto = resposta.message;
-
-      if (typeof texto === 'string' && texto.trim()) {
-        setMensagens((anteriores) => [
-          ...anteriores,
-          { tipo: 'assistente', texto },
-        ]);
+      if (!token) {
+        setErro('Sessão do Cognito não encontrada. Faça login novamente.');
+        return;
       }
 
-      setCarregando(false);
-      return;
+      if (cancelado) return;
+
+      const url = new URL(
+        'wss://dwpt8n9cgd.execute-api.us-east-1.amazonaws.com/dev/'
+      );
+
+      url.searchParams.set('token', token);
+
+      websocket = new WebSocket(url.toString());
+      websocketRef.current = websocket;
+
+      websocket.onopen = () => {
+        console.log('Conexão WebSocket estabelecida.');
+        setConectado(true);
+        setErro('');
+      };
+
+      websocket.onmessage = (evento) => {
+        console.log('Mensagem recebida:', evento.data);
+
+        try {
+          const resposta = JSON.parse(evento.data);
+
+          if (
+            resposta.type === 'connected' ||
+            resposta.type === 'ping' ||
+            resposta.type === 'pong'
+          ) {
+            return;
+          }
+
+          if (resposta.type === 'error') {
+            setErro(
+              resposta.message ||
+                'Não foi possível obter uma resposta da IA.'
+            );
+            setCarregando(false);
+            return;
+          }
+
+          if (resposta.type === 'response') {
+            const texto = resposta.message;
+
+            if (typeof texto === 'string' && texto.trim()) {
+              setMensagens((anteriores) => [
+                ...anteriores,
+                { tipo: 'assistente', texto },
+              ]);
+            }
+
+            setCarregando(false);
+            return;
+          }
+
+          console.log('Mensagem WebSocket ignorada:', resposta);
+        } catch {
+          console.error(
+            'Mensagem recebida em formato JSON inválido:',
+            evento.data
+          );
+
+          setErro('O servidor enviou uma resposta em formato inválido.');
+          setCarregando(false);
+        }
+      };
+
+      websocket.onerror = () => {
+        console.error('Erro na conexão WebSocket.');
+        setErro('Ocorreu um erro na conexão com o servidor.');
+      };
+
+      websocket.onclose = () => {
+        console.log('Conexão WebSocket encerrada.');
+        setConectado(false);
+        setCarregando(false);
+      };
+    } catch (erroConexao) {
+      console.error('Erro ao obter sessão ou conectar ao WebSocket:', erroConexao);
+      setErro('Não foi possível autenticar a conexão. Faça login novamente.');
     }
+  };
 
-    console.log('Mensagem WebSocket ignorada:', resposta);
-  } catch {
-    console.error(
-      'Mensagem recebida em formato JSON inválido:',
-      evento.data
-    );
+  void conectar();
 
-    setErro('O servidor enviou uma resposta em formato inválido.');
-    setCarregando(false);
-  }
-};
-
-
-    websocket.onerror = () => {
-      console.error('Erro na conexão WebSocket.');
-      setErro('Ocorreu um erro na conexão com o servidor.');
-    };
-
-    websocket.onclose = () => {
-      console.log('Conexão WebSocket encerrada.');
-      setConectado(false);
-      setCarregando(false);
-    };
-
-    return () => {
-      websocket.close();
-      websocketRef.current = null;
-    };
-  }, []);
-
+  return () => {
+    cancelado = true;
+    websocket?.close();
+    websocketRef.current = null;
+  };
+}, []);
   const enviarMensagem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

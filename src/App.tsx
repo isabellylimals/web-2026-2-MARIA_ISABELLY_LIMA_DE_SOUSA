@@ -11,53 +11,56 @@ import ChatIA from './pages/ChatIA';
 import PainelFotografo from './pages/PainelFotografo';
 import PainelCliente from './pages/PainelCliente';
 import RotaProtegida from './components/RotaProtegida';
+import { AuthProvider } from './contexts/AuthContext';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-bg-main text-text-main flex flex-col justify-between">
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
-          {/* Rotas Publicas */}
-          <Route path="/" element={<Home />} />
-          <Route path="/sobre" element={<Sobre />} />
-          <Route path="/contato" element={<Contato />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/chat-ia" element={<ChatIA />} />
-          <Route path="/portfolio/:id" element={<Portfolio />} />
+    <AuthProvider>
+      <div className="min-h-screen bg-bg-main text-text-main flex flex-col justify-between">
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
+            {/* Rotas Publicas */}
+            <Route path="/" element={<Home />} />
+            <Route path="/sobre" element={<Sobre />} />
+            <Route path="/contato" element={<Contato />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/chat-ia" element={<ChatIA />} />
+            <Route path="/portfolio/:id" element={<Portfolio />} />
 
-          {/* Rota Protegida - Painel do Cliente */}
-          <Route
-            path="/painel-cliente"
-            element={
-              <RotaProtegida papeisPermitidos={['cliente', 'admin']}>
-                <PainelCliente />
-              </RotaProtegida>
-            }
-          />
+            {/* Rota Protegida - Painel do Cliente */}
+            <Route
+              path="/painel-cliente"
+              element={
+                <RotaProtegida papeisPermitidos={['cliente', 'admin']}>
+                  <PainelCliente />
+                </RotaProtegida>
+              }
+            />
 
-          {/* Rota Protegida - Painel do Fotografo */}
-          <Route
-            path="/painel-fotografo"
-            element={
-              <RotaProtegida papeisPermitidos={['fotografo', 'admin']}>
-                <PainelFotografo />
-              </RotaProtegida>
-            }
-          />
+            {/* Rota Protegida - Painel do Fotografo */}
+            <Route
+              path="/painel-fotografo"
+              element={
+                <RotaProtegida papeisPermitidos={['fotografo', 'admin']}>
+                  <PainelFotografo />
+                </RotaProtegida>
+              }
+            />
 
-          {/* Rota Protegida - Painel Geral (Admin) */}
-          <Route
-            path="/funcionalidades"
-            element={
-              <RotaProtegida papeisPermitidos={['admin']}>
-                <Funcionalidades />
-              </RotaProtegida>
-            }
-          />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+            {/* Rota Protegida - Painel Geral (Admin) */}
+            <Route
+              path="/funcionalidades"
+              element={
+                <RotaProtegida papeisPermitidos={['admin']}>
+                  <Funcionalidades />
+                </RotaProtegida>
+              }
+            />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </AuthProvider>
   );
 }

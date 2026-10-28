@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { getCurrentUser } from 'aws-amplify/auth';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Navbar() {
   const [menuAberto, setMenuAberto] = useState(false);
+  const { usuario, sair } = useAuth();
   const navigate = useNavigate();
 
-  const sessaoStr = localStorage.getItem('usuarioLogado');
-  const usuario = sessaoStr ? JSON.parse(sessaoStr) : null;
-
-  const handleLogout = () => {
-    localStorage.removeItem('usuarioLogado');
+  const handleLogout = async () => {
+    await sair();
     navigate('/login');
   };
-
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `text-sm font-medium transition-colors ${
       isActive ? 'text-wine-primary' : 'text-text-secondary hover:text-text-main'
@@ -43,30 +40,30 @@ export default function Navbar() {
             </>
           )}
 
-          {/* Menu para Cliente Logado */}
-          {usuario?.papel === 'cliente' && (
-            <>
-              <NavLink to="/" className={linkClass}>Explorar Fotógrafos</NavLink>
-              <NavLink to="/painel-cliente" className={linkClass}>Meu Perfil</NavLink>
-            </>
-          )}
-
+              {/* Menu para Cliente Logado */}
+      {usuario?.papel === 'cliente' && (
+        <>
+          <NavLink to="/" className={linkClass}>Explorar Fotógrafos</NavLink>
+          <NavLink to="/painel-cliente" className={linkClass}>Meu Perfil</NavLink>
+          <NavLink to="/chat-ia" className={linkClass}>Chat com IA</NavLink>
+        </>
+      )}
           {/* Menu para Fotografo */}
-          {usuario?.papel === 'fotografo' && (
-            <>
-              <NavLink to="/painel-fotografo" className={linkClass}>Meu Painel</NavLink>
-              <NavLink to="/" className={linkClass}>Ver Catálogo</NavLink>
-            </>
-          )}
-
+{usuario?.papel === 'fotografo' && (
+  <>
+    <NavLink to="/painel-fotografo" className={linkClass}>Meu Painel</NavLink>
+    <NavLink to="/" className={linkClass}>Ver Catálogo</NavLink>
+    <NavLink to="/chat-ia" className={linkClass}>Chat com IA</NavLink>
+  </>
+)}
           {/* Menu Limpo para Administrador */}
-          {usuario?.papel === 'admin' && (
-            <>
-              <NavLink to="/funcionalidades" className={linkClass}>Painel Geral</NavLink>
-              <NavLink to="/" className={linkClass}>Ver Catálogo</NavLink>
-            </>
-          )}
-
+{usuario?.papel === 'admin' && (
+  <>
+    <NavLink to="/funcionalidades" className={linkClass}>Painel Geral</NavLink>
+    <NavLink to="/" className={linkClass}>Ver Catálogo</NavLink>
+    <NavLink to="/chat-ia" className={linkClass}>Chat com IA</NavLink>
+  </>
+)}
           {/* Bloco de Login / Perfil */}
           {usuario ? (
             <div className="flex items-center gap-3 border-l border-border-custom pl-4">
@@ -113,26 +110,27 @@ export default function Navbar() {
           )}
 
           {usuario?.papel === 'cliente' && (
-            <>
-              <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Explorar Fotógrafos</NavLink>
-              <NavLink to="/painel-cliente" onClick={() => setMenuAberto(false)} className={linkClass}>Meu Perfil</NavLink>
-            </>
-          )}
+  <>
+    <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Explorar Fotógrafos</NavLink>
+    <NavLink to="/painel-cliente" onClick={() => setMenuAberto(false)} className={linkClass}>Meu Perfil</NavLink>
+    <NavLink to="/chat-ia" onClick={() => setMenuAberto(false)} className={linkClass}>Chat com IA</NavLink>
+  </>
+)}
 
-          {usuario?.papel === 'fotografo' && (
-            <>
-              <NavLink to="/painel-fotografo" onClick={() => setMenuAberto(false)} className={linkClass}>Meu Painel</NavLink>
-              <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Ver Catálogo</NavLink>
-            </>
-          )}
-
+         {usuario?.papel === 'fotografo' && (
+  <>
+    <NavLink to="/painel-fotografo" onClick={() => setMenuAberto(false)} className={linkClass}>Meu Painel</NavLink>
+    <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Ver Catálogo</NavLink>
+    <NavLink to="/chat-ia" onClick={() => setMenuAberto(false)} className={linkClass}>Chat com IA</NavLink>
+  </>
+)}
           {usuario?.papel === 'admin' && (
-            <>
-              <NavLink to="/funcionalidades" onClick={() => setMenuAberto(false)} className={linkClass}>Painel Geral</NavLink>
-              <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Ver Catálogo</NavLink>
-            </>
-          )}
-
+  <>
+    <NavLink to="/funcionalidades" onClick={() => setMenuAberto(false)} className={linkClass}>Painel Geral</NavLink>
+    <NavLink to="/" onClick={() => setMenuAberto(false)} className={linkClass}>Ver Catálogo</NavLink>
+    <NavLink to="/chat-ia" onClick={() => setMenuAberto(false)} className={linkClass}>Chat com IA</NavLink>
+  </>
+)}
           {usuario ? (
             <div className="pt-2 border-t border-border-custom flex items-center justify-between">
               <div>

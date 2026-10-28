@@ -1,8 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn, confirmSignIn, signOut } from 'aws-amplify/auth';
-import { GetCommand } from '@aws-sdk/lib-dynamodb';
-import { docClient } from '../lib/dynamodb';
+import { useAuth, type Papel } from '../contexts/AuthContext';
 /* ---------- Ícones (SVG inline) ---------- */
 const Icone = ({ d, className = 'w-4 h-4' }: { d: string; className?: string }) => (
   <svg
@@ -40,6 +39,11 @@ const CREDENCIAIS_TESTE = [
 
 // Coloque o arquivo da logo em public/logo.png (ou ajuste o caminho abaixo)
 const LOGO_SRC = '/logo.png';
+   const rotaInicial = (papel: Papel) => {
+     if (papel === 'admin') return '/funcionalidades';
+     if (papel === 'fotografo') return '/painel-fotografo';
+     return '/';
+   };
 
 export default function Login() {
   const [logoErro, setLogoErro] = useState(false);
@@ -51,6 +55,7 @@ export default function Login() {
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState('');
   const navigate = useNavigate();
+  const { recarregarPerfil } = useAuth();
 
   const preencher = (e: string, s: string) => {
     setEmail(e);
@@ -81,11 +86,17 @@ export default function Login() {
         password: senha,
       });
 
-      if (resultado.isSignedIn) {
-  navigate('/chat-ia');
-  return;
-}
+         if (resultado.isSignedIn) {
+     const perfil = await recarregarPerfil();
 
+     if (!perfil) {
+       setErro('Login feito no Cognito, mas não foi possível carregar o seu perfil. Tente novamente.');
+       return;
+     }
+
+     navigate(rotaInicial(perfil.papel));
+     return;
+   }
       if (
         resultado.nextStep.signInStep ===
         'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED'
@@ -142,39 +153,16 @@ export default function Login() {
         );
         return;
       }
+   const perfil = await recarregarPerfil();
 
+   if (!perfil) {
+     setErro('Senha atualizada, mas não foi possível carregar o seu perfil.');
+     return;
+   }
+
+   navigate(rotaInicial(perfil.papel));
       // Recupera o perfil do usuário após concluir a autenticação.
-      const command = new GetCommand({
-        TableName: 'Usuarios',
-        Key: { email: email.trim().toLowerCase() },
-      });
-
-      const response = await docClient.send(command);
-      const usuario = response.Item;
-
-      if (!usuario) {
-        setErro(
-          'Senha atualizada, mas o perfil não foi encontrado na tabela Usuarios.'
-        );
-        return;
-      }
-
-      localStorage.setItem(
-        'usuarioLogado',
-        JSON.stringify({
-          email: usuario.email,
-          nome: usuario.nome,
-          papel: usuario.papel,
-        })
-      );
-
-      if (usuario.papel === 'admin') {
-        navigate('/funcionalidades');
-      } else if (usuario.papel === 'fotografo') {
-        navigate('/painel-fotografo');
-      } else {
-        navigate('/');
-      }
+      
     } catch (err) {
       console.error('Erro ao definir nova senha:', err);
       setErro(

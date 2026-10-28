@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { getCurrentUser } from 'aws-amplify/auth';
 
 export default function Navbar() {
   const [menuAberto, setMenuAberto] = useState(false);

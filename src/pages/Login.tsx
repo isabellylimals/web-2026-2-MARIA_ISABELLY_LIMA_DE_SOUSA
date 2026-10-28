@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signIn, confirmSignIn, signOut } from 'aws-amplify/auth';
 import { GetCommand } from '@aws-sdk/lib-dynamodb';
 import { docClient } from '../lib/dynamodb';
-
 /* ---------- Ícones (SVG inline) ---------- */
 const Icone = ({ d, className = 'w-4 h-4' }: { d: string; className?: string }) => (
   <svg
@@ -46,6 +46,8 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [novaSenha, setNovaSenha] = useState('');
+  const [trocarSenha, setTrocarSenha] = useState(false);
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState('');
   const navigate = useNavigate();
@@ -67,8 +69,113 @@ export default function Login() {
     setCarregando(true);
     setErro('');
 
+          try {
     try {
-      // Busca o item no DynamoDB usando a Partition Key (email)
+      await signOut();
+    } catch {
+      // Não havia uma sessão ativa para encerrar.
+    }
+
+    const resultado = await signIn({
+        username: email.trim().toLowerCase(),
+        password: senha,
+      });
+
+      if (resultado.isSignedIn) {
+        // Busca os dados do usuário no DynamoDB após autenticar no Cognito.
+        const command = new GetCommand({
+          TableName: 'Usuarios',
+          Key: { email: email.trim().toLowerCase() },
+        });
+
+        const response = await docClient.send(command);
+        const usuario = response.Item;
+
+        if (!usuario) {
+          setErro(
+            'Login realizado, mas o perfil não foi encontrado na tabela Usuarios.'
+          );
+          return;
+        }
+
+        localStorage.setItem(
+          'usuarioLogado',
+          JSON.stringify({
+            email: usuario.email,
+            nome: usuario.nome,
+            papel: usuario.papel,
+          })
+        );
+
+        if (usuario.papel === 'admin') {
+          navigate('/funcionalidades');
+        } else if (usuario.papel === 'fotografo') {
+          navigate('/painel-fotografo');
+        } else {
+          navigate('/');
+        }
+
+        return;
+      }
+
+      if (
+        resultado.nextStep.signInStep ===
+        'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED'
+      ) {
+        setTrocarSenha(true);
+        setErro('');
+        return;
+      }
+
+      setErro(
+        'É necessário concluir uma etapa adicional de autenticação. Verifique a configuração da sua conta.'
+      );
+    } catch (err) {
+      console.error('Erro na autenticação Cognito:', err);
+
+      const erro = err as Error;
+
+      if (erro.name === 'NotAuthorizedException') {
+        setErro('E-mail ou senha incorretos.');
+      } else if (erro.name === 'UserNotFoundException') {
+        setErro('Usuário não encontrado no Cognito.');
+      } else if (erro.name === 'UserNotConfirmedException') {
+        setErro('Sua conta ainda não foi confirmada.');
+      } else {
+        setErro(erro.message || 'Erro ao realizar login.');
+      }
+    } finally {
+      setCarregando(false);
+    }}
+      const handleTrocarSenha = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!novaSenha.trim()) {
+      setErro('Digite sua nova senha.');
+      return;
+    }
+
+    if (novaSenha.length < 8) {
+      setErro('A nova senha deve ter pelo menos 8 caracteres.');
+      return;
+    }
+
+    setCarregando(true);
+    setErro('');
+
+    try {
+      const resultado = await confirmSignIn({
+        challengeResponse: novaSenha,
+      });
+
+      if (!resultado.isSignedIn) {
+        setErro(
+          'Não foi possível concluir o acesso. Verifique os requisitos da senha.'
+        );
+        return;
+      }
+
+      // Recupera o perfil do usuário após concluir a autenticação.
       const command = new GetCommand({
         TableName: 'Usuarios',
         Key: { email: email.trim().toLowerCase() },
@@ -78,17 +185,12 @@ export default function Login() {
       const usuario = response.Item;
 
       if (!usuario) {
-        setErro('Usuário não cadastrado.');
+        setErro(
+          'Senha atualizada, mas o perfil não foi encontrado na tabela Usuarios.'
+        );
         return;
       }
 
-      // Validação da senha inserida com a cadastrada na AWS
-      if (usuario.senha !== senha) {
-        setErro('Senha incorreta.');
-        return;
-      }
-
-      // Salva a sessão ativa no navegador com as permissões do usuário
       localStorage.setItem(
         'usuarioLogado',
         JSON.stringify({
@@ -98,7 +200,6 @@ export default function Login() {
         })
       );
 
-      // Redirecionamento automático pelo papel (role)
       if (usuario.papel === 'admin') {
         navigate('/funcionalidades');
       } else if (usuario.papel === 'fotografo') {
@@ -107,8 +208,11 @@ export default function Login() {
         navigate('/');
       }
     } catch (err) {
-      console.error('Erro na autenticação DynamoDB:', err);
-      setErro('Erro ao conectar à AWS. Verifique suas credenciais no .env.local.');
+      console.error('Erro ao definir nova senha:', err);
+      setErro(
+        (err as Error).message ||
+          'Não foi possível definir a nova senha. Verifique os requisitos do Cognito.'
+      );
     } finally {
       setCarregando(false);
     }
@@ -143,7 +247,11 @@ export default function Login() {
       </div>
 
       <div className="bg-bg-secondary border border-border-custom rounded-2xl p-6 sm:p-8 shadow-sm">
-        <form onSubmit={handleLogin} className="space-y-5" noValidate>
+        <form
+  onSubmit={trocarSenha ? handleTrocarSenha : handleLogin}
+  className="space-y-5"
+  noValidate
+>
           {/* E-mail */}
           <div>
             <label htmlFor="email" className="block text-xs font-medium text-text-secondary mb-1.5">
@@ -196,6 +304,38 @@ export default function Login() {
               </button>
             </div>
           </div>
+          {trocarSenha && (
+  <div>
+    <label
+      htmlFor="novaSenha"
+      className="block text-xs font-medium text-text-secondary mb-1.5"
+    >
+      Nova senha
+    </label>
+
+    <div className="relative">
+      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none">
+        <Icone d={ICONES.cadeado} />
+      </span>
+
+      <input
+        id="novaSenha"
+        type="password"
+        value={novaSenha}
+        onChange={(e) => setNovaSenha(e.target.value)}
+        placeholder="Digite sua nova senha"
+        autoComplete="new-password"
+        className={classeInput}
+        required
+        minLength={8}
+      />
+    </div>
+
+    <p className="mt-2 text-xs text-text-secondary">
+      Escolha uma senha que atenda aos requisitos de segurança da sua conta.
+    </p>
+  </div>
+)}
 
           {/* Erro */}
           {erro && (
@@ -219,7 +359,9 @@ export default function Login() {
                 <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
               </svg>
             )}
-            {carregando ? 'Entrando...' : 'Entrar'}
+            {carregando
+  ? (trocarSenha ? 'Salvando senha...' : 'Entrando...')
+  : (trocarSenha ? 'Definir nova senha' : 'Entrar')}
           </button>
         </form>
 

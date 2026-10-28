@@ -7,6 +7,7 @@ import Funcionalidades from './pages/Funcionalidades';
 import Contato from './pages/Contato';
 import Portfolio from './pages/Portfolio';
 import Login from './pages/Login';
+import ChatIA from './pages/ChatIA';
 import PainelFotografo from './pages/PainelFotografo';
 import PainelCliente from './pages/PainelCliente';
 import RotaProtegida from './components/RotaProtegida';
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/chat-ia" element={<ChatIA />} />
           <Route path="/portfolio/:id" element={<Portfolio />} />
 
           {/* Rota Protegida - Painel do Cliente */}

@@ -202,9 +202,7 @@ export default function PainelCliente() {
         return;
       }
 
-      const contentType =
-        resposta.headers.get('content-type') || 'image/jpeg';
-
+    
       const blob = await resposta.blob();
 
       const foto = URL.createObjectURL(blob);

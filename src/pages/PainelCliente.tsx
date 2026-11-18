@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, type FormEvent, type ChangeEvent } from 'react';
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 interface Orcamento {
   id: number;
@@ -16,6 +17,9 @@ interface Orcamento {
 
 type Filtro = 'Todos' | 'Pendente' | 'Respondido' | 'Confirmado' | 'Recusado';
 const FILTROS: Filtro[] = ['Todos', 'Pendente', 'Respondido', 'Confirmado', 'Recusado'];
+
+const FOTO_PERFIL_URL =
+  'https://z5v4xcdjhj.execute-api.us-east-1.amazonaws.com/profile';
 
 const TAMANHO_MAX_FOTO = 2 * 1024 * 1024; // 2 MB
 
@@ -168,6 +172,52 @@ export default function PainelCliente() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+
+  useEffect(() => {
+  const carregarFotoPerfil = async () => {
+    try {
+      const sessao = await fetchAuthSession();
+      const token = sessao.tokens?.idToken?.toString();
+
+      if (!token) {
+        console.error('Token de autenticação não encontrado.');
+        return;
+      }
+
+      const resposta = await fetch(
+        'https://z5v4xcdjhj.execute-api.us-east-1.amazonaws.com/profile',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!resposta.ok) {
+        console.error(
+          'Não foi possível carregar a foto do perfil.',
+          resposta.status
+        );
+        return;
+      }
+
+      const contentType =
+        resposta.headers.get('content-type') || 'image/jpeg';
+
+      const blob = await resposta.blob();
+
+      const foto = URL.createObjectURL(blob);
+
+      setFotoPerfil(foto);
+    } catch (erro) {
+      console.error('Erro ao carregar foto do perfil:', erro);
+    }
+  };
+
+  carregarFotoPerfil();
+}, []);
+
   const contagem = useMemo(() => {
     const base: Record<string, number> = { Todos: orcamentos.length };
     orcamentos.forEach((o) => {
@@ -221,8 +271,51 @@ export default function PainelCliente() {
     setModoEdicao(false);
   };
 
-  const handleSalvarPerfil = (e: FormEvent) => {
-    e.preventDefault();
+const handleSalvarPerfil = async (e: FormEvent) => {
+
+  console.log('### handleSalvarPerfil FOI EXECUTADO ###');
+  e.preventDefault();
+
+  try {
+    const sessao = await fetchAuthSession();
+
+    const token = sessao.tokens?.idToken?.toString();
+
+    if (!token) {
+      mostrarSucesso('Sessão expirada. Faça login novamente.');
+      return;
+    }
+    console.log("TOKEN ENVIADO:", token);
+    const resposta = await fetch(
+      'https://z5v4xcdjhj.execute-api.us-east-1.amazonaws.com/profile',
+      
+      {
+        method: 'PUT',
+        
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nome,
+          email,
+          telefone,
+          cidade,
+          categoria: categoriaInteresse,
+          fotoBase64: fotoPerfil || null,
+        }),
+      }
+    );
+
+    const dados = await resposta.json();
+
+    console.log('Resposta do PUT /profile:', dados);
+
+    if (!resposta.ok) {
+      throw new Error(
+        dados.message || 'Não foi possível atualizar o perfil.'
+      );
+    }
 
     const usuarioAtualizado = {
       ...usuarioInicial,
@@ -234,10 +327,26 @@ export default function PainelCliente() {
       fotoPerfil,
     };
 
-    localStorage.setItem('usuarioLogado', JSON.stringify(usuarioAtualizado));
+    localStorage.setItem(
+      'usuarioLogado',
+      JSON.stringify(usuarioAtualizado)
+    );
+
     setModoEdicao(false);
+
     mostrarSucesso('Perfil atualizado com sucesso.');
-  };
+
+  } catch (erro) {
+
+    console.error('Erro ao atualizar o perfil:', erro);
+
+    mostrarSucesso(
+      erro instanceof Error
+        ? erro.message
+        : 'Não foi possível atualizar o perfil.'
+    );
+  }
+};
 
   const handleConfirmarContratacao = () => {
     if (contratandoId === null) return;

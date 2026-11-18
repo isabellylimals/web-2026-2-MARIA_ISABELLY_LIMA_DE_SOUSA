@@ -18,8 +18,6 @@ interface Orcamento {
 type Filtro = 'Todos' | 'Pendente' | 'Respondido' | 'Confirmado' | 'Recusado';
 const FILTROS: Filtro[] = ['Todos', 'Pendente', 'Respondido', 'Confirmado', 'Recusado'];
 
-const FOTO_PERFIL_URL =
-  'https://z5v4xcdjhj.execute-api.us-east-1.amazonaws.com/profile';
 
 const TAMANHO_MAX_FOTO = 2 * 1024 * 1024; // 2 MB
 
